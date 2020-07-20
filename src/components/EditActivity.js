@@ -8,27 +8,27 @@ export default class Exercises extends Component {
     constructor(props) {
         super(props);
 
-        this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangeDescription = this.onChangeDescription.bind(this);
+        this.onChangePetname = this.onChangePetname.bind(this);
+        this.onChangeActivity = this.onChangeActivity.bind(this);
         this.onChangeDuration = this.onChangeDuration.bind(this);
         this.onChangeDate = this.onChangeDate.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
-            username: '',
-            description: '',
+            petname: '',
+            activity: '',
             duration: 0,
             date: new Date(),
-            users: []
+            pets: []
         };
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:5000/exercises/${this.props.match.params.id}`)
+        axios.get(`http://localhost:5000/activities/${this.props.match.params.id}`)
             .then(response => {
                 this.setState({
-                    username: response.data.username,
-                    description: response.data.description,
+                    petname: response.data.petname,
+                    activity: response.data.activity,
                     duration: response.data.duration,
                     date: new Date(response.data.date)
                 });
@@ -37,11 +37,11 @@ export default class Exercises extends Component {
                 console.log(error);
             });
 
-        axios.get('http://localhost:5000/users/')
+        axios.get('http://localhost:5000/pets/')
             .then(response => {
                 if (response.data.length > 0) {
                     this.setState({
-                        users: response.data.map(user => user.username),
+                        pets: response.data.map(pet => pet.petname),
                     });
                 }
             })
@@ -51,13 +51,13 @@ export default class Exercises extends Component {
 
     }
 
-    onChangeUsername(e) {
+    onChangePetname(e) {
         this.setState({
             username: e.target.value
         });
     }
 
-    onChangeDescription(e) {
+    onChangeActivity(e) {
         this.setState({
             description: e.target.value
         });
@@ -78,16 +78,16 @@ export default class Exercises extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        const exercise = {
-            username: this.state.username,
-            description: this.state.description,
+        const activity = {
+            petname: this.state.petname,
+            activity: this.state.activity,
             duration: this.state.duration,
             date: this.state.date
         };
 
-        console.log(exercise);
+        console.log(activity);
 
-        axios.post(`http://localhost:5000/exercises/update/${this.props.match.params.id}`, exercise)
+        axios.post(`http://localhost:5000/activities/update/${this.props.match.params.id}`, activity)
             .then(res => console.log(res.data));
 
         window.location = '/';
@@ -99,29 +99,29 @@ export default class Exercises extends Component {
                 <h3>Edit Exercise Log</h3>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
-                        <label>Username: </label>
+                        <label>Petname: </label>
                         <select ref="userInput"
                             required
                             className="form-control"
-                            value={this.state.username}
-                            onChange={this.onChangeUsername}>
+                            value={this.state.petname}
+                            onChange={this.onChangePetname}>
                             {
-                                this.state.users.map(function (user) {
+                                this.state.pets.map(function (pet) {
                                     return <option
-                                        key={user}
-                                        value={user}>{user}
+                                        key={pet}
+                                        value={pet}>{pet}
                                     </option>;
                                 })
                             }
                         </select>
                     </div>
                     <div className="form-group">
-                        <label>Description: </label>
+                        <label>Activity: </label>
                         <input type="text"
                             required
                             className="form-control"
-                            value={this.state.description}
-                            onChange={this.onChangeDescription}
+                            value={this.state.activity}
+                            onChange={this.onChangeActivity}
                         />
                     </div>
                     <div className="form-group">
