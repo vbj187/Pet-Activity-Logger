@@ -4,13 +4,13 @@ import axios from 'axios';
 
 const Exercise = props => (
     <tr>
-        <td>{props.exercise.username}</td>
-        <td>{props.exercise.description}</td>
+        <td>{props.exercise.petname}</td>
+        <td>{props.exercise.activities}</td>
         <td>{props.exercise.duration}</td>
         <td>{props.exercise.date.substring(0, 10)}</td>
         <td>{props.exercise.date.substring(12, 19)}</td>
         <td>
-            <Link to={"/edit/" + props.exercise._id}>edit</Link> | <a href="#" onClick={() => { props.deleteExercise(props.exercise._id); }}>delete</a>
+            <Link to={"/edit/" + props.exercise._id}>edit</Link> | <a href="#" onClick={() => { props.deleteActivities(props.exercise._id); }}>delete</a>
         </td>
     </tr>
 );
@@ -20,40 +20,40 @@ export default class Exercises extends Component {
     constructor(props) {
         super(props);
 
-        this.deleteExercise = this.deleteExercise.bind(this);
+        this.deleteActivities = this.deleteActivities.bind(this);
 
-        this.state = { exercises: [] };
+        this.state = { activities: [] };
     }
 
     componentDidMount() {
-        axios.get('http://localhost:5000/exercises/')
+        axios.get('http://localhost:5000/activities/')
             .then(response => {
-                this.setState({ exercises: response.data });
+                this.setState({ activities: response.data });
             })
             .catch(
                 error => console.log(error)
             );
     }
 
-    deleteExercise(id) {
-        axios.delete(`http://localhost:5000/exercises/${id}`)
+    deleteActivities(id) {
+        axios.delete(`http://localhost:5000/activities/${id}`)
             .then(res => console.log(res.data));
 
         this.setState({
-            exercises: this.state.exercises.filter(el => el._id !== id)
+            activities: this.state.activities.filter(el => el._id !== id)
         });
     }
 
-    exerciseList() {
-        return this.state.exercises.map(currentexercise => {
-            return <Exercise exercise={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id} />;
+    activityList() {
+        return this.state.activities.map(currentactivity => {
+            return <Exercise exercise={currentactivity} deleteActivities={this.deleteActivities} key={currentactivity._id} />;
         });
     }
 
     render() {
         return (
             <div className="container">
-                <h3>Logged Exercise</h3>
+                <h3>Logged Activity</h3>
                 <table className="table">
                     <thead className="thead-dark">
                         <tr>
@@ -66,7 +66,7 @@ export default class Exercises extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.exerciseList()}
+                        {this.activityList()}
                     </tbody>
                 </table>
             </div>

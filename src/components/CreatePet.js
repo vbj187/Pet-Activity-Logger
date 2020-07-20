@@ -10,7 +10,7 @@ export default class Exercises extends Component {
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
-            username: ''
+            petname: ''
         };
 
 
@@ -19,7 +19,7 @@ export default class Exercises extends Component {
 
     onChangePetname(e) {
         this.setState({
-            username: e.target.value
+            petname: e.target.value
         });
     }
 
