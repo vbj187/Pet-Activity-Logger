@@ -18,11 +18,11 @@ const connection = mongoose.connect('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
-const exerciseRouter = require('./routes/exercises');
-const usersRouter = require('./routes/users');
+const activityRouter = require('./routes/activities');
+const petsRouter = require('./routes/pets');
 
-app.use('/exercises', exerciseRouter);
-app.use('/users', usersRouter);
+app.use('/activities', activityRouter);
+app.use('/pets', petsRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
